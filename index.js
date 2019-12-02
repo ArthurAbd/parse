@@ -78,7 +78,6 @@ const checkPhoneUrl = (data) => {
 const start = 'https://www.avito.ru/rossiya/kvartiry/sdam/na_dlitelnyy_srok?cd=1&s=104&user=1';
 let nextUrl = null
 
-
 const startParser = () => {
     if (!nextUrl) {
         getFirstUrl(start)
@@ -90,25 +89,29 @@ const startParser = () => {
     return getAdsContent(`https://www.avito.ru${nextUrl}`)
 }
 
-startParser()
-    .then((data) => {
-        console.log('2',data)
-        return getAdsPhone(data)
-    })
-    .then((data) => {
-        console.log('3',data)
-        return checkPhoneUrl(data)
-    })
-    .then((data) => {
-        console.log('4',data)
-        return getDataNormaliz(data)
-    })
-    .then((dataNormaliz) => {
-        console.log('5',dataNormaliz)
-        nextUrl = dataNormaliz['nextUrl']
-        
-        if (isAdsNumber()) { //true false
-            return sendDataNormaliz(dataNormaliz)
-        }
-        return
-    })
+let i = 0
+
+while(i < 100) {
+    i = startParser()
+        .then((data) => {
+            console.log('2',data)
+            return getAdsPhone(data)
+        })
+        .then((data) => {
+            console.log('3',data)
+            return checkPhoneUrl(data)
+        })
+        .then((data) => {
+            console.log('4',data)
+            return getDataNormaliz(data)
+        })
+        .then(async (dataNormaliz) => {
+            console.log('5',dataNormaliz)
+            nextUrl = dataNormaliz['nextUrl']
+            if (await isAdsNumber()) { //true false
+                return i + 100
+            }
+            console.log(await sendDataNormaliz(dataNormaliz))
+            return i + 1
+        })
+}

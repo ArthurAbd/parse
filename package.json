@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/ArthurAbd/parse#readme",
   "dependencies": {
+    "knex": "^0.20.3",
+    "mysql2": "^2.0.1",
     "osmosis": "^1.1.10"
   }
 }
