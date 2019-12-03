@@ -97,7 +97,18 @@ const getDataNormaliz = (data) => {
     dataNormaliz['price'] = data['price']
     dataNormaliz['address'] = data['address']
 
-    dataNormaliz['type'] = data['listParams'][3].substr(19)
+    const getType = (key) => {
+        switch (key) {
+            case 'комната': return 'r'
+            case 'студии': return 'st'
+            case '1-комнатные': return '1k'
+            case '2-комнатные': return '2k'
+            case '3-комнатные': return '3k'
+            default: return '4k+'
+        }
+    }
+    
+    dataNormaliz['type'] = getType(data['listParams'][3].substr(19))
     dataNormaliz['area'] = data['listParams'][4].substr(15)
     dataNormaliz['floor'] = data['listParams'][0].substr(6)
     dataNormaliz['floors'] = data['listParams'][1].substr(15)
